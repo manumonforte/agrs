@@ -1,7 +1,7 @@
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from utils import *
+from agrs.utils import *
 import random
 
 if __name__ == '__main__':
@@ -24,10 +24,8 @@ if __name__ == '__main__':
     get_artists(sp, artists, data)
 
     get_recommendations_by_artist(sp, data)
-    # Guardar popularidad de las canciones
-    
 
     get_track_artists(sp, data)
 
-    with open('data_raw.json', 'w', encoding='UTF-8') as outfile:
+    with open('processed_data.json', 'w', encoding='UTF-8') as outfile:
         json.dump(data, outfile, ensure_ascii=False)
