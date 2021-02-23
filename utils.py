@@ -1,3 +1,4 @@
+import numpy as np
 
 def get_artists_in_file(filename):
     """
@@ -23,6 +24,7 @@ def get_artists(sp, artists, data):
             id = items[0]['id']
             data[id] = {}
             data[id]['name'] = artist
+            data[id]['popularity'] = items[0]['popularity']
         else:
             return None
 
@@ -36,10 +38,15 @@ def get_recommendations_by_artist(sp, data):
     """
     for id in data.keys():
         recommendation_list = {}
-        results = sp.recommendations(seed_artists=[id])
+        urn = 'spotify:artist:{}'.format(id)
+        results = sp.artist_top_tracks(urn)
+        # results = sp.recommendations(seed_artists=[id], limit=25)
+        mean_pop = np.array([])
         for track in results['tracks']:
-            recommendation_list[track['id']] = track['name']
+            mean_pop = np.append(mean_pop, [track['popularity']])
+            recommendation_list[track['id']] = {'name': track['name'], 'popularity': track['popularity']}
         data[id]['tracks'] = recommendation_list
+        data[id]['popularity_songs'] = np.mean(mean_pop)
 
 
 def get_track_artists(sp, data):
@@ -55,9 +62,14 @@ def get_track_artists(sp, data):
             track = sp.track(urn)
             data[id]['partners'] = {}
             for elem in track['artists']:
-                if elem['name'] not in data[id]['partners'].keys():
+                if elem['id'] != id:
                     data[id]['partners'][elem['id']] = {}
                     data[id]['partners'][elem['id']]['name'] = elem['name']
                     data[id]['partners'][elem['id']]['times'] = 1
+
+                    popularity_results = sp.search(q='artist:' + elem['name'], type='artist')
+                    items = popularity_results['artists']['items']
+                    if len(items) > 0:
+                        data[id]['partners'][elem['id']]['popularity'] = items[0]['popularity']
                 else:
                     data[id]['partners'][elem['id']]['times'] += 1
