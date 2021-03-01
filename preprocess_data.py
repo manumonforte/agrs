@@ -1,10 +1,10 @@
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from agrs.utils import *
+from utils import *
 import random
 
-if __name__ == '__main__':
+def preprocess_data():
     random.seed(10)
     # Load credentials
     with open('credentials.json') as json_file:
@@ -29,3 +29,7 @@ if __name__ == '__main__':
 
     with open('processed_data.json', 'w', encoding='UTF-8') as outfile:
         json.dump(data, outfile, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    preprocess_data()

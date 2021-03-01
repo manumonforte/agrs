@@ -1,5 +1,6 @@
 import numpy as np
-
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def get_artists_in_file(filename):
     """
@@ -78,3 +79,43 @@ def get_track_artists(sp, data):
                             data[id]['partners'][elem['id']]['popularity'] = items[0]['popularity']
                     else:
                         data[id]['partners'][elem['id']]['times'] += 1
+
+
+def get_nodes_and_weights(grafo, data):
+    for key in data:
+        grafo.add_node(data[key]['name'], weight=data[key]['popularity'])
+
+    return grafo
+
+
+def get_edges(grafo, data):
+    for key in data:
+        artist = data[key]['name']
+        for partner in data[key]['partners']:
+            # print(artist, data[key]['partners'][partner]['name'], data[key]['partners'][partner]['times'])
+            grafo.add_edge(artist, data[key]['partners'][partner]['name'], weight=data[key]['partners'][partner]['times'])
+
+    return grafo
+
+
+def get_labels_and_colors(g):
+    labels = {}
+    colors = []
+    for n in g.nodes:
+        if len(g.nodes[n]) == 0:
+            labels[n] = str(n)
+            # labels.append((str(n), str(0)))
+            colors.append(0)
+        else:
+            labels[n] = str(n) + " " + str(g.nodes[n]['weight'])
+            # labels.append((str(n), str(g.nodes[n]['weight'])))
+            colors.append(g.nodes[n]['weight'])
+
+    return labels, colors
+
+
+def draw_graph(g, labels={}, colors=[]):
+    pos = nx.spring_layout(g)
+    nx.draw(g, pos, with_labels=True, labels=labels, node_color=colors)
+    plt.axis('off')
+    plt.show()
