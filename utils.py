@@ -81,7 +81,14 @@ def get_track_artists(sp, data):
                         data[id]['partners'][elem['id']]['times'] += 1
 
 
+
 def get_nodes_and_weights(grafo, data):
+    """
+
+    :param grafo:
+    :param data:
+    :return:
+    """
     for key in data:
         grafo.add_node(data[key]['name'], weight=data[key]['popularity'])
 
@@ -89,6 +96,12 @@ def get_nodes_and_weights(grafo, data):
 
 
 def get_edges(grafo, data):
+    """
+
+    :param grafo:
+    :param data:
+    :return:
+    """
     for key in data:
         artist = data[key]['name']
         for partner in data[key]['partners']:
@@ -99,6 +112,11 @@ def get_edges(grafo, data):
 
 
 def get_labels_and_colors(g):
+    """
+
+    :param g:
+    :return:
+    """
     labels = {}
     colors = []
     for n in g.nodes:
@@ -115,7 +133,15 @@ def get_labels_and_colors(g):
 
 
 def draw_graph(g, labels={}, colors=[]):
+    """
+
+    :param g:
+    :param labels:
+    :param colors:
+    :return:
+    """
     pos = nx.spring_layout(g)
     nx.draw(g, pos, with_labels=True, labels=labels, node_color=colors)
     plt.axis('off')
-    plt.show()
+    plt.savefig('images'
+                '/artists_graph.png')
