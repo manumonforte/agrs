@@ -66,7 +66,7 @@ function initializeDisplay() {
       .attr("class", "links")
       .selectAll("line")
       .data(graph.links)
-      .enter().append("line").attr("stroke", edge_size);
+      .enter().append("line").attr("stroke-width", edge_size);
 
   node = svg.append("g")
       .attr("class", "nodes")
@@ -105,7 +105,7 @@ function node_size(d) {
 }
 
 function edge_size(d) {
-    return d.value * 10;
+    return d.value * 3;
 }
 
 // update the display positions after each simulation tick
