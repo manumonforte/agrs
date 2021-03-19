@@ -5,7 +5,17 @@
      <title> Spotify Artists Graph</title>
    </head>
    <body>
+      <div class="'controls">
+          <center><h2>Metric Measures</h2></center>
+          <div class="force">
+            <p><label><input type="radio" name = 'metric' checked onchange="clearMetrics(); metrics.centrality = this.checked; updateAll();"> Centrality</label></p>
+            <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.closeness = this.checked; updateAll();"> Closeness</label></p>
+            <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.betweenness = this.checked; updateAll();"> Betweenness</label></p>
+            <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.eigenvector = this.checked; updateAll();"> Eigenvector</label></p>
+            <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.pagerank = this.checked; updateAll();"> Pagerank</label></p>
 
+         </div>
+      </div>
       <svg></svg>
 
       <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -15,6 +25,5 @@
 </html>
 
 <!--TODO-->
-<!--&ndash;&gt; Aristas en funcion del valor value-->
-<!--&ndash;&gt; Poner bonita la pagina-->
-<!--&ndash;&gt; Plantearse hacer un barplot en funcion del centrality por ejemplo-->
+<!-- Aristas en funcion del valor value-->
+<!-- Poner bonita la pagina-->

@@ -5,15 +5,13 @@ let svg = d3.select("svg"),
 let link, node;
 let graph;
 
-const simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function (d) {
-        return d.id;
-    }))
-    .force("charge", d3.forceManyBody())
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .force('collide', d3.forceCollide(function (d) {
-        return 20
-    }));
+metrics = {
+    "centrality" : true,
+    "closeness" : false,
+    "betweenness" : false,
+    "eigenvector" : false,
+    "pagerank" : false
+}
 
 const tool_tip = d3.tip()
     .attr("class", "d3-tip")
@@ -27,6 +25,7 @@ const tool_tip = d3.tip()
             + "<strong>Pagerank: </strong> " + d['pagerank'] + "<br>"
         return message
     });
+
 svg.call(tool_tip);
 
 // load the data
@@ -35,15 +34,30 @@ d3.json("../data/data_d3js.json", function(error, _graph) {
   graph = _graph;
   initializeDisplay();
   initializeSimulation();
-
 });
 
+var simulation;
+
 function initializeSimulation() {
-  simulation.nodes(graph.nodes)
+    simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().id(function (d) {
+            return d.id;
+        }))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force('collide', d3.forceCollide(function (d) {
+            return 20
+        }));
+
+    simulation.nodes(graph.nodes)
       .on("tick", ticked);
 
-  simulation.force("link")
+    simulation.force("link")
       .links(graph.links);
+}
+
+function update_node_size() {
+    node.attr("r", node_size)
 }
 
 function initializeDisplay() {
@@ -78,7 +92,16 @@ function node_color(d) {
 }
 
 function node_size(d) {
-   return (d.avg_popularity_songs / 10) + 5;
+    if (metrics.betweenness)
+        return d.betweenness + 10
+    else if (metrics.centrality)
+        return d.centrality + 10
+    else if (metrics.closeness)
+        return d.closeness + 10
+    else if (metrics.eigenvector)
+        return d.eigenvector + 10
+    else
+        return d.pagerank + 10
 }
 
 function edge_size(d) {
@@ -123,11 +146,19 @@ function dragended(d) {
 d3.select(window).on("resize", function(){
     width = +svg.node().getBoundingClientRect().width;
     height = +svg.node().getBoundingClientRect().height;
-    updateForces();
+    update_node_size();
 });
 
-// convenience function to update everything (run after UI input)
 function updateAll() {
-    updateForces();
-    updateDisplay();
+    update_node_size();
+}
+
+function clearMetrics(){
+    metrics = {
+        "centrality": false,
+        "closeness": false,
+        "betweenness": false,
+        "eigenvector": false,
+        "pagerank": false
+    }
 }
