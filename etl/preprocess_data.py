@@ -1,7 +1,7 @@
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from agrs.utils import *
+from agrs.etl.utils import *
 import random
 
 def preprocess_data():
@@ -19,7 +19,7 @@ def preprocess_data():
 
     data = {}
 
-    artists = get_artists_in_file('data/artists')
+    artists = get_artists_in_file('../data/artists')
 
     get_artists(sp, artists, data)
 
@@ -27,7 +27,7 @@ def preprocess_data():
 
     get_track_artists(sp, data)
 
-    with open('data/processed_data.json', 'w', encoding='UTF-8') as outfile:
+    with open('../data/processed_data.json', 'w', encoding='UTF-8') as outfile:
         json.dump(data, outfile, ensure_ascii=False)
 
 

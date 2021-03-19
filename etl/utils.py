@@ -20,7 +20,9 @@ def get_artists(sp, artists, data):
     :return: json data with artists
     """
     for artist in artists:
+        print(artist)
         results = sp.search(q='artist:' + artist, type='artist')
+        print(results)
         items = results['artists']['items']
         if len(items) > 0:
             id = items[0]['id']
@@ -82,7 +84,7 @@ def get_track_artists(sp, data):
 
 
 
-def get_nodes_and_weights(grafo, data):
+def get_nodes_and_weights(grafo, data, data_d3js):
     """
 
     :param grafo:
@@ -91,24 +93,30 @@ def get_nodes_and_weights(grafo, data):
     """
     for key in data:
         grafo.add_node(data[key]['name'], weight=data[key]['popularity'])
+        data_d3js['nodes'].append(data[key])
 
     return grafo
 
 
-def get_edges(grafo, data):
+def get_edges(graph, data, data_d3js):
     """
 
-    :param grafo:
+    :param graph:
     :param data:
     :return:
     """
     for key in data:
         artist = data[key]['name']
         for partner in data[key]['partners']:
-            # print(artist, data[key]['partners'][partner]['name'], data[key]['partners'][partner]['times'])
-            grafo.add_edge(artist, data[key]['partners'][partner]['name'], weight=data[key]['partners'][partner]['times'])
 
-    return grafo
+            if data[key]['name'] in graph.nodes and data[key]['partners'][partner]['name'] in graph.nodes:
+                graph.add_edge(artist, data[key]['partners'][partner]['name'], weight=data[key]['partners'][partner]['times'])
+                data_d3js['links'].append({
+                    "source": data[key]['name'],
+                    "target": data[key]['partners'][partner]['name'],
+                    "value": data[key]['partners'][partner]['times']
+                })
+    return graph
 
 
 def get_labels_and_colors(g):
