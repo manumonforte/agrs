@@ -30,16 +30,6 @@ if __name__ == '__main__':
             node['betweenness'] = round(betweenness[current_name] * 100, 2)
             node['eigenvector'] = round(eigenvector[current_name] * 100, 2)
             node['pagerank'] = round(pagerank[current_name] * 100, 2)
-
-            if node['popularity'] > 90:
-                node['popularity_class'] = 3
-            elif 50 <= node['popularity'] <= 90:
-                node['popularity_class'] = 2
-            elif 25 <= node['popularity'] <= 50:
-                node['popularity_class'] = 1
-            else:
-                node['popularity_class'] = 0
-
             node.pop('partners', None)
             node.pop('tracks', None)
             node.pop('genres', None)

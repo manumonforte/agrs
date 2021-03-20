@@ -85,9 +85,9 @@ function initializeDisplay() {
 }
 
 function node_color(d) {
-    if(d.popularity_class === 3) return 'green'
-    else if (d.popularity_class === 2) return 'blue'
-    else if (d.popularity_class === 1) return 'orange'
+    if(d.popularity >= 90) return 'green'
+    else if (d.popularity < 90 && d.popularity >= 50) return 'blue'
+    else if (d.popularity < 50 && d.popularity >= 25) return 'orange'
     else return 'red'
 }
 

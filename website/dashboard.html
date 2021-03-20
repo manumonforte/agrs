@@ -13,8 +13,15 @@
             <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.betweenness = this.checked; updateAll();"> Betweenness</label></p>
             <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.eigenvector = this.checked; updateAll();"> Eigenvector</label></p>
             <p><label><input type="radio" name = 'metric' onchange="clearMetrics(); metrics.pagerank = this.checked; updateAll();"> Pagerank</label></p>
-
-         </div>
+          </div>
+          <div class="force" class="legend">
+              <center><h2>Artist Popularity</h2></center>
+              <img src="img/node-color-legend.png" alt="Node Color legend">
+          </div>
+          <div class="force" class="legend">
+              <center><h2>Mutual Songs (Edge)</h2></center>
+              <img src="img/edege-size-legend.png" alt="Edge Size legend">
+          </div>
       </div>
       <svg></svg>
 

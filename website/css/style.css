@@ -23,9 +23,12 @@ body {
 	background-color: black;
 	border-radius: 3px;
 	padding: 5px;
-	margin: 5px 0;
+	margin: 25px 100px;
 }
 
+.force {
+	margin: 20%;
+}
 .controls .force p label {
 	margin-right: .5em;
 	font-size: 120%;
@@ -136,4 +139,8 @@ svg {
 	margin: -2px 0 0 0;
 	top: 100%;
 	left: 0;
+}
+
+.legend {
+	margin-top: 5%;
 }
