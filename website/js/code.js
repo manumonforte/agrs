@@ -17,12 +17,23 @@ const tool_tip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-8, 0])
     .html(function (d) {
-        message = "<strong><center>" + d['id'] + "</strong></center><br>" +
-            "<strong>Closeness: </strong> " + d['closeness'] + "<br>"
-            + "<strong>Centrality: </strong> " + d['centrality'] + "<br>"
-            + "<strong>Betweenness: </strong> " + d['betweenness'] + "<br>"
-            + "<strong>Eigenvector: </strong> " + d['eigenvector'] + "<br>"
-            + "<strong>Pagerank: </strong> " + d['pagerank'] + "<br>"
+
+        let message = "<strong><center>" + d['id'] + "</strong></center><br>" +
+            "<strong>Followers: </strong> " + d['followers'] + "<br>" +
+            "<strong>Avg Popularity Songs: </strong> " + d['avg_popularity_songs'] + "<br>" +
+            "<strong>Artist Popularity: </strong> " + d['popularity'] + "<br>"
+
+        if (metrics.centrality)
+            message += "<strong>Centrality: </strong> " + d['centrality'] + "<br>"
+        else if (metrics.closeness)
+            message += "<strong>Closeness: </strong> " + d['closeness'] + "<br>"
+        else if (metrics.betweenness)
+            message += "<strong>Betweenness: </strong> " + d['betweenness'] + "<br>"
+        else if (metrics.eigenvector)
+            message += "<strong>Eigenvector: </strong> " + d['eigenvector'] + "<br>"
+        else
+            message += "<strong>Pagerank: </strong> " + d['pagerank'] + "<br>"
+
         return message
     });
 
@@ -68,6 +79,10 @@ function initializeDisplay() {
       .data(graph.links)
       .enter().append("line").attr("stroke-width", edge_size);
 
+  link.append("title").text(function(d) {
+      return d.source + " - " + d.value + " - " + d.target;
+  });
+
   node = svg.append("g")
       .attr("class", "nodes")
       .selectAll("circle")
@@ -86,7 +101,7 @@ function initializeDisplay() {
 
 function node_color(d) {
     if(d.popularity >= 90) return 'green'
-    else if (d.popularity < 90 && d.popularity >= 50) return 'blue'
+    else if (d.popularity < 90 && d.popularity >= 50) return '#9f00ff'
     else if (d.popularity < 50 && d.popularity >= 25) return 'orange'
     else return 'red'
 }
