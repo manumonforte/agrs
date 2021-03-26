@@ -25,6 +25,7 @@ if __name__ == '__main__':
     for node in data_d3js['nodes']:
             current_name = node['name']
             node['id'] = current_name
+            node['name'] = None
             node['centrality'] = round(centrality[current_name] * 100, 2)
             node['closeness'] = round(closeness[current_name] * 100, 2)
             node['betweenness'] = round(betweenness[current_name] * 100, 2)
